@@ -1,10 +1,19 @@
 package com.vmish.taskmanager.model;
 
 //import javax.persistence.Entity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import org.hibernate.annotations.IdGeneratorType;
+
 import java.time.LocalDateTime;
 
-
+@Entity
 public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long taskid;
     private long userid;
     private String username;
     private String taskName;
@@ -12,6 +21,9 @@ public class Task {
     private LocalDateTime creationTime;
     private LocalDateTime changeTime;
     private Status status;
+
+    public Task() {
+    }
 
     public Task(long userid, String username, String taskName, String description) {
         this.userid = 1;
@@ -82,5 +94,9 @@ public class Task {
     @Override
     public String toString() {
         return taskName;
+    }
+
+    public String getTaskid() {
+        return Long.toString(taskid);
     }
 }

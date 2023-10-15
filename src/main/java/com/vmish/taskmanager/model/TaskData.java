@@ -1,45 +1,64 @@
 package com.vmish.taskmanager.model;
 
+import com.vmish.taskmanager.TaskRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.time.format.DateTimeFormatter;
 
-
+@Service
 public class TaskData {
-    private static TaskData instance = new TaskData();
+
+    private TaskRepository taskRepository;
+
     private ObservableList<Task> taskList;
 
     private DateTimeFormatter formatter;
+
+    public TaskData(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+
+        taskList = FXCollections.observableArrayList();
+        taskList.addAll(taskRepository.findAll());
+        formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    }
 
     public ObservableList<Task> getTaskList() {
         return taskList;
     }
 
-    public static TaskData getInstance() {
+/*    public static TaskData getInstance() {
         return instance;
-    }
-    public void createList(){
+    }*/
+/*    public void createList(){
         if(taskList == null){
             taskList = FXCollections.observableArrayList();
-            formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
         }
-    }
+    }*/
 
     public DateTimeFormatter getFormatter() {
         return formatter;
     }
 
     public Task addTask(Task newTask) {
-        if (!taskList.add(newTask)) {
+
+        Task result = taskRepository.save(newTask);
+        if (result==null) {
             return null;
         }
-        return newTask;
+        taskList.add(result);
+        return result;
     }
     public void setTaskList(ObservableList<Task> taskList){
         this.taskList = taskList;
     }
 
 
+/*    public void saveList() {
+        taskRepository.saveAll(taskList);
+    }*/
 }

@@ -112,7 +112,7 @@
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <Label text="ID пользователя:" GridPane.halignment="RIGHT">
+                  <Label text="Номер задачи:" GridPane.halignment="RIGHT">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
@@ -126,11 +126,6 @@
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <Label fx:id="userIdLabel" text="Label" GridPane.columnIndex="1">
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </Label>
                   <Label fx:id="usernameLabel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -166,14 +161,7 @@
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin></Label>
-                  <Label fx:id="userIdLabel" layoutX="728.0" layoutY="73.0" visible="false">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Label>
+
                   <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -182,6 +170,7 @@
                         <Insets />
                      </GridPane.margin>
                   </TextArea>
+                  <Label fx:id="taskIdLabel" GridPane.columnIndex="1" />
                </children>
             </GridPane>
          </items>
