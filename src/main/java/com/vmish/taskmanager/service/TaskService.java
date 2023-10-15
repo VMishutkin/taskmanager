@@ -1,16 +1,16 @@
-package com.vmish.taskmanager.model;
+package com.vmish.taskmanager.service;
 
-import com.vmish.taskmanager.TaskRepository;
+import com.vmish.taskmanager.repository.TaskRepository;
+import com.vmish.taskmanager.model.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 
 import java.time.format.DateTimeFormatter;
 
 @Service
-public class TaskData {
+public class TaskService {
 
     private TaskRepository taskRepository;
 
@@ -18,7 +18,7 @@ public class TaskData {
 
     private DateTimeFormatter formatter;
 
-    public TaskData(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
 
         taskList = FXCollections.observableArrayList();

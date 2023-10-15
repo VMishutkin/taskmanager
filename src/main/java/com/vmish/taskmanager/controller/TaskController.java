@@ -7,7 +7,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.vmish.taskmanager.model.Task;
-import com.vmish.taskmanager.model.TaskData;
+import com.vmish.taskmanager.service.TaskService;
 
 @Component
 @FxmlView("taskwindow.fxml")
@@ -20,23 +20,20 @@ public class TaskController {
     private TextField tasknameTextField;
     @FXML
     private TextArea descriptionTextArea;
-    private TaskData taskData;
+    private TaskService taskService;
 
     @Autowired
-    public void setTaskData(TaskData taskData) {
-        this.taskData = taskData;
+    public void setTaskData(TaskService taskService) {
+        this.taskService = taskService;
     }
 
 
     public Task createTaskFromDialog() {
-
-
         String username = usernameTextField.getText().trim();
         String taskname = tasknameTextField.getText().trim();
         String details = descriptionTextArea.getText().trim();
         return (new Task(1, username, taskname, details));
-        ///*/taskData.addTask(newTask);
-        //TaskData.getInstance().addTask(newTask);
+
 
     }
 

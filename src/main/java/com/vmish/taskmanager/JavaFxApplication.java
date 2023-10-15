@@ -1,14 +1,10 @@
 package com.vmish.taskmanager;
 
-import com.vmish.taskmanager.controller.MainController;
-import com.vmish.taskmanager.model.TaskData;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.stereotype.Component;
 
 
 public class JavaFxApplication extends Application {

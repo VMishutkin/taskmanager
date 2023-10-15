@@ -1,4 +1,4 @@
-package com.vmish.taskmanager;
+package com.vmish.taskmanager.repository;
 
 import com.vmish.taskmanager.model.Task;
 import org.springframework.stereotype.Repository;
