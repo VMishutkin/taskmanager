@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -38,30 +37,23 @@ public class MainController {
     private TaskService taskService;
     private Auth auth;
 
-    public MainController( FxControllerAndView<TaskController, VBox> taskDialog, FxControllerAndView<LoginController, VBox> loginDialog) {
+    public MainController(FxControllerAndView<TaskController, VBox> taskDialog, FxControllerAndView<LoginController, VBox> loginDialog) {
         this.loginDialog = loginDialog;
         this.taskDialog = taskDialog;
     }
 
-    /*
-
-        @Autowired
-        private void setTaskData(TaskService taskService) {
-            this.taskService = taskService;
-        }*/
     public void initialize() {
         auth = new Auth();
-    }
 
+    }
     @FXML
     public void showNewTaskDialogue() {
         //taskdialog.getController().show();
-        taskDialog.getController().show();
+        taskDialog.getController().showAndWait(auth.getLogin());
     }
-
     @FXML
     public void showLoginDialog() {
-        loginDialog.getController().show();
+        auth = loginDialog.getController().getAuth();
     }
 }
 

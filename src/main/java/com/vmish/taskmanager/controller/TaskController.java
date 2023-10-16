@@ -6,12 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import com.vmish.taskmanager.model.Task;
 import com.vmish.taskmanager.service.TaskService;
+import com.vmish.taskmanager.model.Task;
 
 @Component
 @FxmlView("taskwindow.fxml")
@@ -20,26 +20,37 @@ public class TaskController {
     @FXML
     private VBox dialog;
 
+    private TaskService taskService;
+
     @FXML
     private TextField tasknameTextField;
     @FXML
     private TextArea descriptionTextArea;
-    private TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
 
     @FXML
     public void initialize() {
         this.stage = new Stage();
         stage.setScene(new Scene(dialog));
+        stage.initModality(Modality.APPLICATION_MODAL);
     }
 
-    public void show() {
-        stage.show();
+    public Task showAndWait(String username) {
+        stage.showAndWait();
+
+        String taskname = tasknameTextField.getText().trim();
+        String details = descriptionTextArea.getText().trim();
+        return (taskService.addTask(new Task(username,taskname, details)));
     }
 
     @FXML
     void click(ActionEvent actionEvent) {
         stage.close();
     }
+
 
 
 }

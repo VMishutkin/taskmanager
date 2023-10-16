@@ -6,11 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
-
 
 @Component
 @FxmlView("loginwindow.fxml")
@@ -22,20 +21,23 @@ public class LoginController {
     private TextField usernameTextField;
     @FXML
     private PasswordField passwordField;
-/*    public Auth getAuth() {
-        Auth auth = new Auth();
-        auth.setLogin(usernameTextField.getText());
-        auth.setPass(passwordField.getText());
-        return auth;
-    }*/
 
     @FXML
     public void initialize() {
         this.stage = new Stage();
         stage.setScene(new Scene(dialog));
+        stage.initModality(Modality.APPLICATION_MODAL);
     }
 
-    public void show() {
-        stage.show();
+    public Auth login(){
+        stage.close();
+        return new Auth(usernameTextField.getText(), passwordField.getText());
+    }
+    public void cancel(){
+        stage.close();
+    }
+    public Auth getAuth() {
+        stage.showAndWait();
+        return login();
     }
 }

@@ -5,6 +5,16 @@ public class Auth {
     private String login;
     private String pass;
 
+
+    public Auth() {
+
+    }
+
+    public Auth(String login, String password) {
+        this.login = login;
+        this.pass = password;
+    }
+
     public String getLogin() {
         return login;
     }
