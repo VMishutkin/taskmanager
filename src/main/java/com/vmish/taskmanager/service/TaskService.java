@@ -20,7 +20,6 @@ public class TaskService {
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-
         taskList = FXCollections.observableArrayList();
         taskList.addAll(taskRepository.findAll());
         formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -46,7 +45,7 @@ public class TaskService {
 
     public Task addTask(Task newTask) {
         Task result = taskRepository.save(newTask);
-        taskList.add(taskRepository.save(newTask));
+        taskList.add(result);
         return result;
     }
     public void setTaskList(ObservableList<Task> taskList){

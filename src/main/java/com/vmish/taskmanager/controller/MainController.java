@@ -1,7 +1,10 @@
 package com.vmish.taskmanager.controller;
 
 import com.vmish.taskmanager.model.Auth;
+import com.vmish.taskmanager.model.Task;
 import com.vmish.taskmanager.service.TaskService;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -37,23 +40,48 @@ public class MainController {
     private TaskService taskService;
     private Auth auth;
 
-    public MainController(FxControllerAndView<TaskController, VBox> taskDialog, FxControllerAndView<LoginController, VBox> loginDialog) {
+    public MainController(FxControllerAndView<TaskController, VBox> taskDialog, FxControllerAndView<LoginController, VBox> loginDialog, TaskService taskService) {
         this.loginDialog = loginDialog;
         this.taskDialog = taskDialog;
+        this.taskService = taskService;
     }
 
     public void initialize() {
         auth = new Auth();
+        taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Task> observableValue, Task oldTask, Task newTask) {
+                if (newTask != null) {
+                    Task item = (Task) taskListView.getSelectionModel().getSelectedItem();
+                    taskIdLabel.setText("" + item.getTaskid());
+                    usernameLabel.setText(item.getUsername());
+                    tasknameLabel.setText(item.getTaskName());
+                    descriptionTextArea.setText(item.getDescription());
+                    creationDateLabel.setText(taskService.getFormatter()
+                            .format(item.getCreationTime()));
+                    changedDateLabel.setText(taskService.getFormatter()
+                            .format(item.getCreationTime()));
+                    statusLabel.setText("new");
+
+                }
+            }
+        });
+        taskListView.setItems(taskService.getTaskList());
+
 
     }
     @FXML
     public void showNewTaskDialogue() {
         //taskdialog.getController().show();
-        taskDialog.getController().showAndWait(auth.getLogin());
+        taskDialog.getController().createNewTask(auth.getLogin());
     }
     @FXML
     public void showLoginDialog() {
         auth = loginDialog.getController().getAuth();
+        if(auth.getLogin().length()>0){
+            System.out.println("Login success");
+        }
     }
 }
 

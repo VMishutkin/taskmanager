@@ -21,7 +21,6 @@ public class TaskController {
     private VBox dialog;
 
     private TaskService taskService;
-
     @FXML
     private TextField tasknameTextField;
     @FXML
@@ -30,7 +29,6 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
-
     @FXML
     public void initialize() {
         this.stage = new Stage();
@@ -38,21 +36,20 @@ public class TaskController {
         stage.initModality(Modality.APPLICATION_MODAL);
     }
 
-    public Task showAndWait(String username) {
+    public Task createNewTask(String username) {
         stage.showAndWait();
-
         String taskname = tasknameTextField.getText().trim();
         String details = descriptionTextArea.getText().trim();
-        return (taskService.addTask(new Task(username,taskname, details)));
+        return (taskService.addTask(new Task(username, taskname, details)));
     }
 
-    @FXML
-    void click(ActionEvent actionEvent) {
+    public void save(ActionEvent actionEvent) {
         stage.close();
     }
 
-
-
+    public void cancel(ActionEvent actionEvent) {
+        stage.close();
+    }
 }
 
 /*@Component
