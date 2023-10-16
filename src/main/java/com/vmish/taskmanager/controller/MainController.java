@@ -39,6 +39,7 @@ public class MainController {
     @FXML
     private Label statusLabel;
     private TaskService taskService;
+    private Auth auth;
 
 
     @Autowired
@@ -47,6 +48,7 @@ public class MainController {
     }
 
     public void initialize() {
+        auth = new Auth();
 /*        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBox.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -88,9 +90,7 @@ public class MainController {
             }
         });
 
-        mainVBox.setOnMouseMoved(mouseEvent -> {
 
-        });
         taskListView.setItems(taskService.getTaskList());
         taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         taskListView.getSelectionModel().selectFirst();
@@ -111,7 +111,7 @@ public class MainController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             LoginController controller = fxmlLoader.getController();
-            Auth auth = controller.getAuth();
+            auth = controller.getAuth();
             System.out.println("login - " + auth.getLogin() + ", pass - " + auth.getPass());
 
         }
@@ -134,7 +134,7 @@ public class MainController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             TaskController controller = fxmlLoader.getController();
-            Task newTask = controller.createTaskFromDialog();
+            Task newTask = controller.createTaskFromDialog(auth.getLogin());
             taskService.addTask(newTask);
 
         }

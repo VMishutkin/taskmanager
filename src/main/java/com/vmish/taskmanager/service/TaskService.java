@@ -45,12 +45,8 @@ public class TaskService {
     }
 
     public Task addTask(Task newTask) {
-
         Task result = taskRepository.save(newTask);
-        if (result==null) {
-            return null;
-        }
-        taskList.add(result);
+        taskList.add(taskRepository.save(newTask));
         return result;
     }
     public void setTaskList(ObservableList<Task> taskList){

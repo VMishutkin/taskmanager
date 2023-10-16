@@ -2,15 +2,15 @@ package com.vmish.taskmanager.model;
 
 
 public class Auth {
-    private String Login;
+    private String login;
     private String pass;
 
     public String getLogin() {
-        return Login;
+        return login;
     }
 
     public void setLogin(String login) {
-        Login = login;
+        this.login = login;
     }
 
     public String getPass() {

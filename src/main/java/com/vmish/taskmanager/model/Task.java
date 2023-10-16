@@ -25,8 +25,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(long userid, String username, String taskName, String description) {
-        this.userid = 1;
+    public Task(String username, String taskName, String description) {
         this.username = username;
         this.taskName = taskName;
         this.description = description;

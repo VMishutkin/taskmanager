@@ -27,10 +27,6 @@
                <children>
                   <Label text="Описание:" GridPane.rowIndex="3" />
                   <Label text="Название задачи:" GridPane.rowIndex="2" />
-                  <Label text="ID пользователя:" />
-                  <Label text="Имя пользователя:" GridPane.rowIndex="1" />
-                  <TextField fx:id="userIdTextField" GridPane.columnIndex="1" />
-                  <TextField fx:id="usernameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="tasknameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>

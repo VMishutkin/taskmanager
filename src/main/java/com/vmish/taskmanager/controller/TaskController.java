@@ -12,10 +12,7 @@ import com.vmish.taskmanager.service.TaskService;
 @Component
 @FxmlView("taskwindow.fxml")
 public class TaskController {
-    @FXML
-    private TextField userIdTextField;
-    @FXML
-    private TextField usernameTextField;
+
     @FXML
     private TextField tasknameTextField;
     @FXML
@@ -28,11 +25,11 @@ public class TaskController {
     }
 
 
-    public Task createTaskFromDialog() {
-        String username = usernameTextField.getText().trim();
+    public Task createTaskFromDialog(String login) {
         String taskname = tasknameTextField.getText().trim();
         String details = descriptionTextArea.getText().trim();
-        return (new Task(1, username, taskname, details));
+        String username = login;
+        return (taskService.addTask(new Task(username,taskname, details)));
 
 
     }
