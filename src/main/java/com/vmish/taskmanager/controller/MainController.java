@@ -1,25 +1,22 @@
 package com.vmish.taskmanager.controller;
 
 import com.vmish.taskmanager.model.Auth;
-import com.vmish.taskmanager.model.Task;
 import com.vmish.taskmanager.service.TaskService;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import net.rgielen.fxweaver.core.FxControllerAndView;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.Optional;
 
 @Component
 @FxmlView("mainwindow.fxml")
 public class MainController {
 
+    //private final FxWeaver fxWeaver;
+    private final FxControllerAndView<TaskController, VBox> taskDialog;
+    private final FxControllerAndView<LoginController, VBox> loginDialog;
     @FXML
     private VBox mainVBox;
     @FXML
@@ -41,15 +38,36 @@ public class MainController {
     private TaskService taskService;
     private Auth auth;
 
-
-    @Autowired
-    private void setTaskData(TaskService taskService) {
-        this.taskService = taskService;
+    public MainController( FxControllerAndView<TaskController, VBox> taskDialog, FxControllerAndView<LoginController, VBox> loginDialog) {
+        this.loginDialog = loginDialog;
+        this.taskDialog = taskDialog;
     }
 
+    /*
+
+        @Autowired
+        private void setTaskData(TaskService taskService) {
+            this.taskService = taskService;
+        }*/
     public void initialize() {
         auth = new Auth();
-/*        Dialog<ButtonType> dialog = new Dialog<>();
+    }
+
+    @FXML
+    public void showNewTaskDialogue() {
+        //taskdialog.getController().show();
+        taskDialog.getController().show();
+    }
+
+    @FXML
+    public void showLoginDialog() {
+        loginDialog.getController().show();
+    }
+}
+
+
+/*
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBox.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
@@ -68,8 +86,27 @@ public class MainController {
             System.out.println("login " + auth.getLogin() + ", pass " + auth.getPass());
             //taskService.addTask(newTask);
 
-        }*/
+        }
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainVBox.getScene().getWindow());
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
+        try {
+        dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+        throw new RuntimeException(e);
+        }*//*
 
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+        LoginController controller = fxmlLoader.getController();
+        Auth auth = controller.getAuth();
+        System.out.println("login " + auth.getLogin() + ", pass " + auth.getPass());
+        //taskService.addTask(newTask);
+
+        }
         taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
 
             @Override
@@ -88,14 +125,17 @@ public class MainController {
 
                 }
             }
-        });
-
+        });*/
+/*
 
         taskListView.setItems(taskService.getTaskList());
         taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        taskListView.getSelectionModel().selectFirst();
-    }
-    @FXML
+        taskListView.getSelectionModel().selectFirst();*/
+
+
+
+
+  /*  @FXML
     public void showLoginDialog(){
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBox.getScene().getWindow());
@@ -115,10 +155,10 @@ public class MainController {
             System.out.println("login - " + auth.getLogin() + ", pass - " + auth.getPass());
 
         }
-    }
+    }*/
 
 
-    @FXML
+/*    @FXML
     public void showNewTaskDialogue() {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBox.getScene().getWindow());
@@ -139,7 +179,5 @@ public class MainController {
 
         }
 
-    }
+    }*/
 
-
-}
