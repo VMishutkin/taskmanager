@@ -49,7 +49,7 @@
       <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button mnemonicParsing="false" text="Выход" />
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Пользователь" textOverrun="CLIP" />
+            <Button fx:id="loginButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showLoginDialog" text="Войти" textOverrun="CLIP" />
         </items>
       </ToolBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0">

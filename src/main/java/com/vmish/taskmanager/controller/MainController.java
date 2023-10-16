@@ -47,7 +47,7 @@ public class MainController {
     }
 
     public void initialize() {
-        Dialog<ButtonType> dialog = new Dialog<>();
+/*        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainVBox.getScene().getWindow());
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
@@ -55,7 +55,7 @@ public class MainController {
             dialog.getDialogPane().setContent(fxmlLoader.load());
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*//*
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
@@ -66,7 +66,7 @@ public class MainController {
             System.out.println("login " + auth.getLogin() + ", pass " + auth.getPass());
             //taskService.addTask(newTask);
 
-        }
+        }*/
 
         taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
 
@@ -94,6 +94,27 @@ public class MainController {
         taskListView.setItems(taskService.getTaskList());
         taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         taskListView.getSelectionModel().selectFirst();
+    }
+    @FXML
+    public void showLoginDialog(){
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainVBox.getScene().getWindow());
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            LoginController controller = fxmlLoader.getController();
+            Auth auth = controller.getAuth();
+            System.out.println("login - " + auth.getLogin() + ", pass - " + auth.getPass());
+
+        }
     }
 
 

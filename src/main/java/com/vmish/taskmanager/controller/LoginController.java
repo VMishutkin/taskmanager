@@ -3,10 +3,11 @@ package com.vmish.taskmanager.controller;
 import com.vmish.taskmanager.model.Auth;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
-import java.awt.*;
+
 
 @Component
 @FxmlView("loginwindow.fxml")
