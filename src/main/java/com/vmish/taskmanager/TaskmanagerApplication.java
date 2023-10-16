@@ -30,7 +30,7 @@ public class TaskmanagerApplication {
 	}
 
 	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
 	public <C, V extends Node> FxControllerAndView<C, V> controllerAndView(FxWeaver fxWeaver,
 																		   InjectionPoint injectionPoint) {
 		return new InjectionPointLazyFxControllerAndViewResolver(fxWeaver)

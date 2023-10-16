@@ -28,8 +28,6 @@ public class JavaFxApplication extends Application {
                 .initializers(initializer)
                 .run(getParameters().getRaw().toArray(new String[0]));
 
-        //TaskData.getInstance().createList();
-
     }
 
     @Override

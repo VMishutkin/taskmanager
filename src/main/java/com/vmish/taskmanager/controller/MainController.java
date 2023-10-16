@@ -16,11 +16,8 @@ import org.springframework.stereotype.Component;
 @FxmlView("mainwindow.fxml")
 public class MainController {
 
-    //private final FxWeaver fxWeaver;
     private final FxControllerAndView<TaskController, VBox> taskDialog;
     private final FxControllerAndView<LoginController, VBox> loginDialog;
-    @FXML
-    private VBox mainVBox;
     @FXML
     private ListView taskListView;
     @FXML
@@ -69,7 +66,6 @@ public class MainController {
         });
         taskListView.setItems(taskService.getTaskList());
 
-
     }
     @FXML
     public void showNewTaskDialogue() {
@@ -79,7 +75,7 @@ public class MainController {
     @FXML
     public void showLoginDialog() {
         auth = loginDialog.getController().getAuth();
-        if(auth.getLogin().length()>0){
+        if(!auth.getLogin().isEmpty()){
             System.out.println("Login success");
         }
     }
@@ -151,7 +147,6 @@ public class MainController {
         taskListView.setItems(taskService.getTaskList());
         taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         taskListView.getSelectionModel().selectFirst();*/
-
 
 
 
