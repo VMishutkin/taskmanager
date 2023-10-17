@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.controlsfx.control.textfield.TextFields;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -87,8 +88,8 @@ public class LoginController {
         rolesComboBox.getItems().addAll(roles);
         Label userRole = new Label("Роль");
 
-        loginGridPane.add(rolesComboBox, 1, 2);
-        loginGridPane.add(userRole, 0, 2);
+        loginGridPane.add(rolesComboBox, 1, 3);
+        loginGridPane.add(userRole, 0, 3);
         isNowCreated = true;
         loginButton.setOnAction(v -> stage.close());
         stage.showAndWait();
@@ -103,7 +104,5 @@ public class LoginController {
 
     }
 
-    public void editTask(Task selectedItem) {
 
-    }
 }

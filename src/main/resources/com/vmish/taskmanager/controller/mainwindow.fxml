@@ -55,8 +55,8 @@
       </ToolBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTask" text="Редактировать" />
           <Button fx:id="newTaskButton" accessibleText="Новая задача" mnemonicParsing="false" onAction="#showNewTaskDialogue" text="Новая задача" />
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTask" text="Редактировать" />
             <Button fx:id="changeStatusButton" mnemonicParsing="false" onAction="#changeStatus" text="Взять в работу" />
         </items>
       </ToolBar>

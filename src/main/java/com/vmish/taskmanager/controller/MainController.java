@@ -147,7 +147,8 @@ public class MainController {
 
     public void editTask(){
         Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
-        loginDialog.getController().editTask(selectedItem);
+        taskDialog.getController().editTask(selectedItem);
+        taskService.setTaskList(auth);
     }
 
 }
