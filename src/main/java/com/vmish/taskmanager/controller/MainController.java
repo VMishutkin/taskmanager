@@ -1,11 +1,14 @@
 package com.vmish.taskmanager.controller;
 
 import com.vmish.taskmanager.model.Auth;
+import com.vmish.taskmanager.model.Status;
 import com.vmish.taskmanager.model.Task;
 import com.vmish.taskmanager.service.TaskService;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -13,6 +16,8 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @FxmlView("mainwindow.fxml")
@@ -58,7 +63,6 @@ public class MainController {
         newTaskButton.setDisable(true);
         editButton.setDisable(true);
         changeStatusButton.setDisable(true);
-        auth = new Auth();
         taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
 
             @Override
@@ -73,13 +77,49 @@ public class MainController {
                             .format(item.getCreationTime()));
                     changedDateLabel.setText(taskService.getFormatter()
                             .format(item.getCreationTime()));
-                    statusLabel.setText("new");
+                    statusLabel.setText(item.getStatus().name());
 
                 }
             }
         });
         taskListView.setItems(taskService.getTaskList());
+        taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+
+
+        changeStatusButton.textProperty().bind(Bindings.createStringBinding(() -> {
+            Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
+            if (selectedItem == null) {
+                return "Изменить статус";
+            } else if (statusLabel.textProperty().getValue().equals(Status.ACCEPTED.name())) {
+                return "Закрыть задачу";
+            } else if (statusLabel.textProperty().getValue().equals(Status.CLOSED.name())) {
+                return "Вернуть в работу";
+            } else {
+                return "Взять в работу?";
+            }
+        }, statusLabel.textProperty()));
+
+
+    }
+
+    public void changeStatus() {
+        Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            return;
+        } else if (selectedItem.getStatus() == Status.NEW) {
+            selectedItem.setStatus(Status.ACCEPTED);
+        } else if (selectedItem.getStatus() == Status.ACCEPTED) {
+            selectedItem.setStatus(Status.CLOSED);
+        } else {
+            selectedItem.setStatus(Status.ACCEPTED);
+        }
+        selectedItem.setChangeTime(LocalDateTime.now());
+        statusLabel.setText(selectedItem.getStatus().name());
+        changedDateLabel.setText(taskService.getFormatter()
+                .format(selectedItem.getCreationTime()));
+        taskService.update(selectedItem);
+        taskService.setTaskList(auth);
     }
 
     @FXML
@@ -98,127 +138,18 @@ public class MainController {
         loginDialog = fxWeaver.load(LoginController.class);
         auth = loginDialog.getController().getAuth();
         if (!auth.getLogin().isEmpty()) {
-            System.out.println("Login success for " + auth.getLogin() + " role - " + auth.getRole());
             newTaskButton.setDisable(false);
             editButton.setDisable(false);
             changeStatusButton.setDisable(false);
+            taskService.setTaskList(auth);
         }
-
     }
+
+    public void editTask(){
+        Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
+        loginDialog.getController().editTask(selectedItem);
+    }
+
 }
 
-
-/*
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainVBox.getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*//*
-
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            LoginController controller = fxmlLoader.getController();
-            Auth auth = controller.getAuth();
-            System.out.println("login " + auth.getLogin() + ", pass " + auth.getPass());
-            //taskService.addTask(newTask);
-
-        }
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainVBox.getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
-        try {
-        dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-        throw new RuntimeException(e);
-        }*//*
-
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-        LoginController controller = fxmlLoader.getController();
-        Auth auth = controller.getAuth();
-        System.out.println("login " + auth.getLogin() + ", pass " + auth.getPass());
-        //taskService.addTask(newTask);
-
-        }
-        taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Task> observableValue, Task oldTask, Task newTask) {
-                if (newTask != null) {
-                    Task item = (Task) taskListView.getSelectionModel().getSelectedItem();
-                    taskIdLabel.setText("" + item.getTaskid());
-                    usernameLabel.setText(item.getUsername());
-                    tasknameLabel.setText(item.getTaskName());
-                    descriptionTextArea.setText(item.getDescription());
-                    creationDateLabel.setText(taskService.getFormatter()
-                            .format(item.getCreationTime()));
-                    changedDateLabel.setText(taskService.getFormatter()
-                            .format(item.getCreationTime()));
-                    statusLabel.setText("new");
-
-                }
-            }
-        });*/
-/*
-
-        taskListView.setItems(taskService.getTaskList());
-        taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        taskListView.getSelectionModel().selectFirst();*/
-
-
-
-  /*  @FXML
-    public void showLoginDialog(){
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainVBox.getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/loginwindow.fxml"));
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            LoginController controller = fxmlLoader.getController();
-            auth = controller.getAuth();
-            System.out.println("login - " + auth.getLogin() + ", pass - " + auth.getPass());
-
-        }
-    }*/
-
-
-/*    @FXML
-    public void showNewTaskDialogue() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainVBox.getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/com/vmish/taskmanager/controller/taskwindow.fxml"));
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            TaskController controller = fxmlLoader.getController();
-            Task newTask = controller.createTaskFromDialog(auth.getLogin());
-            taskService.addTask(newTask);
-
-        }
-
-    }*/
 

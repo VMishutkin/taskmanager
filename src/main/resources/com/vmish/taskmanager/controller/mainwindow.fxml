@@ -55,9 +55,9 @@
       </ToolBar>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
+            <Button fx:id="editButton" mnemonicParsing="false" onAction="#editTask" text="Редактировать" />
           <Button fx:id="newTaskButton" accessibleText="Новая задача" mnemonicParsing="false" onAction="#showNewTaskDialogue" text="Новая задача" />
-            <Button fx:id="editButton" mnemonicParsing="false" text="Редактировать" />
-            <Button fx:id="changeStatusButton" mnemonicParsing="false" text="Взять в работу" />
+            <Button fx:id="changeStatusButton" mnemonicParsing="false" onAction="#changeStatus" text="Взять в работу" />
         </items>
       </ToolBar>
     <SplitPane dividerPositions="0.25" focusTraversable="true" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">

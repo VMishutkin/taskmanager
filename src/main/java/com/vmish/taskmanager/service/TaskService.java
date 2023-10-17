@@ -1,5 +1,7 @@
 package com.vmish.taskmanager.service;
 
+import com.vmish.taskmanager.model.Auth;
+import com.vmish.taskmanager.model.Role;
 import com.vmish.taskmanager.repository.TaskRepository;
 import com.vmish.taskmanager.model.Task;
 import javafx.collections.FXCollections;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -21,23 +24,13 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
         taskList = FXCollections.observableArrayList();
-        taskList.addAll(taskRepository.findAll());
-        formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     }
 
     public ObservableList<Task> getTaskList() {
         return taskList;
     }
-
-/*    public static TaskData getInstance() {
-        return instance;
-    }*/
-/*    public void createList(){
-        if(taskList == null){
-            taskList = FXCollections.observableArrayList();
-
-        }
-    }*/
 
     public DateTimeFormatter getFormatter() {
         return formatter;
@@ -48,12 +41,20 @@ public class TaskService {
         taskList.add(result);
         return result;
     }
-    public void setTaskList(ObservableList<Task> taskList){
-        this.taskList = taskList;
+
+    public void setTaskList(Auth auth) {
+        taskList.clear();
+        if (auth.getRole().equals(Role.ADMIN)) {
+            taskList.addAll(taskRepository.findAll());
+        } else {
+            taskList.addAll(taskRepository.findByUsername(auth.getLogin()));
+        }
+
+    }
+
+    public void update(Task selectedItem) {
+        taskRepository.save(selectedItem);
     }
 
 
-/*    public void saveList() {
-        taskRepository.saveAll(taskList);
-    }*/
 }

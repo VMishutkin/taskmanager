@@ -28,6 +28,7 @@ public class Task {
     public Task(String username, String taskName, String description) {
         this.username = username;
         this.taskName = taskName;
+        this.status = Status.NEW;
         this.description = description;
         this.creationTime = LocalDateTime.now();
         this.changeTime = LocalDateTime.now();
