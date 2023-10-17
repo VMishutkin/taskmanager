@@ -1,5 +1,7 @@
 package com.vmish.taskmanager.controller;
 
+import com.vmish.taskmanager.model.Auth;
+import com.vmish.taskmanager.model.Role;
 import com.vmish.taskmanager.repository.UserRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,17 +65,26 @@ public class TaskController {
         stage.close();
     }
 
-    public void editTask(Task selectedItem) {
-        tasknameTextField.setText(selectedItem.getTaskName());
-        descriptionTextArea.setText(selectedItem.getDescription());
-        List<String> userList = userRepository.getAllUserNames();
+    public void editTask(Task selectedItem, Auth auth) {
         Label usernameLabel = new Label("Пользователь");
         TextField usernameTextField = new TextField();
-        TextFields.bindAutoCompletion(usernameTextField, userList);
-        taskGridPane.add(usernameLabel,0,1);
-        taskGridPane.add(usernameTextField,1,1);
+        if (auth.getRole() == Role.ADMIN) {
+            usernameTextField.setText(auth.getLogin());
+            List<String> userList = userRepository.getAllUserNames();
+            usernameTextField = new TextField();
+            TextFields.bindAutoCompletion(usernameTextField, userList);
+            taskGridPane.add(usernameLabel, 0, 1);
+            taskGridPane.add(usernameTextField, 1, 1);
+        }
+        tasknameTextField.setText(selectedItem.getTaskName());
+        descriptionTextArea.setText(selectedItem.getDescription());
+
         stage.showAndWait();
-        selectedItem.setUsername(usernameTextField.getText());
+        if (auth.getRole() == Role.ADMIN) {
+            selectedItem.setUsername(usernameTextField.getText());
+            taskGridPane.getChildren().remove(usernameLabel);
+            taskGridPane.getChildren().remove(usernameTextField);
+        }
         selectedItem.setTaskName(tasknameTextField.getText());
         selectedItem.setDescription(descriptionTextArea.getText());
         selectedItem.setChangeTime(LocalDateTime.now());

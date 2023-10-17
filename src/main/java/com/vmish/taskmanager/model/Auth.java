@@ -9,8 +9,6 @@ public class Auth {
 
 
     public Auth() {
-
-
     }
 
     public Auth(String login, Role role) {
@@ -21,11 +19,6 @@ public class Auth {
     public String getLogin() {
         return login;
     }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
 
     public Role getRole() {
         return role;

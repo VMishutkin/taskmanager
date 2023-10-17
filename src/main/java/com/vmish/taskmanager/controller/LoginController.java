@@ -88,8 +88,8 @@ public class LoginController {
         rolesComboBox.getItems().addAll(roles);
         Label userRole = new Label("Роль");
 
-        loginGridPane.add(rolesComboBox, 1, 3);
-        loginGridPane.add(userRole, 0, 3);
+        loginGridPane.add(rolesComboBox, 1, 4);
+        loginGridPane.add(userRole, 0, 4);
         isNowCreated = true;
         loginButton.setOnAction(v -> stage.close());
         stage.showAndWait();
