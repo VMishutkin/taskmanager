@@ -135,7 +135,7 @@ public class MainController {
     public void showAuthWindow() {
         loginDialog = fxWeaver.load(LoginController.class);
         auth = loginDialog.getController().getAuth();
-        if (!auth.getLogin().isEmpty()) {
+        if (auth != null) {
             setDisableButtons(false);
             taskService.updateTaskList(auth);
         }

@@ -57,11 +57,11 @@ public class TaskController {
         return (taskService.addTask(new Task(username, taskname, details)));
     }
 
-    public void save(ActionEvent actionEvent) {
+    public void save() {
         stage.close();
     }
 
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         stage.close();
     }
 

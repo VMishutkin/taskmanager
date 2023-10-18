@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="dialog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vmish.taskmanager.controller.LoginController">
+<VBox fx:id="dialog" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vmish.taskmanager.controller.LoginController">
 
           <children>
             <GridPane fx:id="loginGridPane">
@@ -26,12 +26,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Логин" GridPane.rowIndex="2" />
-                  <Label text="Пароль" GridPane.rowIndex="3" />
+                  <Label text="Логин" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Label text="Пароль" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                   <TextField fx:id="usernameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
+      <Label fx:id="authenticationFailedLabel" text="Authentication Failed" visible="false" />
       <HBox fx:id="buttonsHbox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" text="login" />

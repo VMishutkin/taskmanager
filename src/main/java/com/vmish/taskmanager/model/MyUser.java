@@ -28,4 +28,8 @@ public class MyUser {
     public Role getRole() {
         return role;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }
