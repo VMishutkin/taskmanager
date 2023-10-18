@@ -3,6 +3,9 @@ package com.vmish.taskmanager.model;
 
 import com.vmish.taskmanager.repository.UserRepository;
 
+/**
+ * Класс для предоставления прав пользователя методам
+ */
 public class Auth {
     private String login;
     private Role role;

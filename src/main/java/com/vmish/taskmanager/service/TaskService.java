@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Сервис для сохранения-управления задачами
+ */
 @Service
 public class TaskService {
 
@@ -58,6 +61,9 @@ public class TaskService {
         updatedTask.setTitle(updatedTitle);
         updatedTask.setDescription(updatedDescription);
         taskRepository.save(updatedTask);
+    }
 
+    public void updateItem(Task task) {
+        taskRepository.save(task);
     }
 }

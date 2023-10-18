@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Контроллер главного окна
+ */
 @Component
 @FxmlView("mainwindow.fxml")
 public class MainController {
@@ -48,6 +51,7 @@ public class MainController {
     @FXML
     private Button changeStatusButton;
 
+
     public MainController(FxWeaver fxWeaver, FxControllerAndView<TaskController, VBox> taskDialog,
                           FxControllerAndView<LoginController, VBox> loginDialog, TaskService taskService) {
         this.fxWeaver = fxWeaver;
@@ -56,6 +60,7 @@ public class MainController {
         this.taskService = taskService;
     }
 
+
     public void initialize() {
         setDisableButtons(true);
         setListAndViewBinding();
@@ -63,6 +68,9 @@ public class MainController {
         setChangingStatusBinding();
     }
 
+    /**
+     * Устанавливаем привязку ListView к taskService.taskList. Добавляем отображение всех полей в правой части окна
+     */
     private void setListAndViewBinding() {
         taskListView.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Task>) (observableValue, oldTask, newTask) -> {
             if (newTask != null) {
@@ -81,6 +89,10 @@ public class MainController {
         taskListView.setItems(taskService.getTaskList());
     }
 
+    /**
+     * Меняет текст кнопки - если задача создана можно взять в работу, задачу в работе можно закрыть,
+     * а закрытую задачу вернуть в работу
+     */
     private void setChangingStatusBinding() {
         changeStatusButton.textProperty().bind(Bindings.createStringBinding(() -> {
             Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
@@ -95,13 +107,18 @@ public class MainController {
             }
         }, statusLabel.textProperty()));
     }
-
+    /**
+    *Метод для включения-отключения кнопок управления задачами
+     */
     private void setDisableButtons(boolean disable) {
         newTaskButton.setDisable(disable);
         editButton.setDisable(disable);
         changeStatusButton.setDisable(disable);
     }
 
+    /**
+     * метод устанавливающий текст статуса согласно перечислению Роль
+     */
     public void changeStatus() {
         Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -121,26 +138,39 @@ public class MainController {
         taskService.updateTaskList(auth);
     }
 
+    /**
+     * Вызывает метод открывающий окно создания задачи
+     */
     @FXML
     public void showNewTaskDialogue() {
         //taskdialog.getController().show();
         taskDialog.getController().createNewTask(auth.getLogin());
     }
 
+    /**
+     * Вызывает метод отображения окна создания нового пользователя для тестирования приложения
+     */
     public void showCreateUserWindow() {
         loginDialog = fxWeaver.load(LoginController.class);
         loginDialog.getController().createUser();
     }
 
+    /**
+     * Вызывает метод отображения окна авторизации пользователя
+     * если получен токен с именем и правами активируем кнопки и выгружаем список задач
+     */
     public void showAuthWindow() {
         loginDialog = fxWeaver.load(LoginController.class);
         auth = loginDialog.getController().getAuth();
-        if (auth != null) {
+        if (auth !=null && auth.getLogin()!=null) {
             setDisableButtons(false);
             taskService.updateTaskList(auth);
         }
     }
 
+    /**
+     * Вызываем метод отображения окна редактирования задачи
+     */
     public void editTask() {
         Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {

@@ -1,5 +1,8 @@
 package com.vmish.taskmanager.model;
 
+/**
+ * Перечисления для статусов задачи с ортдельной строкой для отображения
+ */
 public enum Status {
     NEW ("Новая"),
     ACCEPTED("В работе"),

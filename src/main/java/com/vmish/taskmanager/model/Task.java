@@ -8,12 +8,14 @@ import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
+/**
+ * Класс представляющий задачу
+ */
 @Entity
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long taskid;
-    private long userid;
     private String username;
     private String title;
     private String description;
@@ -34,9 +36,7 @@ public class Task {
 
     }
 
-    public long getUserid() {
-        return userid;
-    }
+
 
     public String getUsername() {
         return username;
@@ -46,9 +46,7 @@ public class Task {
         this.username = username;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
-    }
+
 
     public String getTitle() {
         return title;
@@ -97,5 +95,18 @@ public class Task {
 
     public String getTaskid() {
         return Long.toString(taskid);
+    }
+
+    public static Task copy(Task selectedTask) {
+
+        Task copiedTask= new Task();
+        copiedTask.taskid = selectedTask.taskid;
+        copiedTask.username = selectedTask.username;
+        copiedTask.title = selectedTask.title;
+        copiedTask.status = selectedTask.status;
+        copiedTask.description = selectedTask.description;
+        copiedTask.creationTime = selectedTask.creationTime;
+        copiedTask.changeTime =  LocalDateTime.now();
+       return  copiedTask;
     }
 }

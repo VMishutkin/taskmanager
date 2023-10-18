@@ -3,6 +3,9 @@ package com.vmish.taskmanager.model;
 
 import jakarta.persistence.*;
 
+/**
+ * Класс для сохранения пользователей как сущности в базу данных
+ */
 @Entity
 public class MyUser {
 @Id

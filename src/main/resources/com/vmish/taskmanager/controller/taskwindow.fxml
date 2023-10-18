@@ -24,8 +24,8 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Описание:" GridPane.rowIndex="3" />
-                  <Label text="Название задачи:" GridPane.rowIndex="2" />
+                  <Label text="Описание:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                  <Label text="Название задачи:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                   <TextField fx:id="tasknameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
@@ -33,6 +33,7 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="Save" />
+            <Button fx:id="createButton" mnemonicParsing="false" onAction="#create" text="Create" />
             <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
          </children>
       </HBox>
