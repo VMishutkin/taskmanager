@@ -15,9 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class TaskService {
 
     private TaskRepository taskRepository;
-
     private ObservableList<Task> taskList;
-
     private DateTimeFormatter formatter;
 
     public TaskService(TaskRepository taskRepository) {
@@ -48,7 +46,6 @@ public class TaskService {
         } else {
             taskList.addAll(taskRepository.findByUsername(auth.getLogin()));
         }
-
     }
 
     public void update(Task selectedItem) {
@@ -56,4 +53,11 @@ public class TaskService {
     }
 
 
+    public void updateItem(Task updatedTask, String updatedUserName, String updatedTitle, String updatedDescription) {
+        updatedTask.setUsername(updatedUserName);
+        updatedTask.setTitle(updatedTitle);
+        updatedTask.setDescription(updatedDescription);
+        taskRepository.save(updatedTask);
+
+    }
 }

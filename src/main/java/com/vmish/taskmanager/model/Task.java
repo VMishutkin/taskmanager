@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import org.hibernate.annotations.IdGeneratorType;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +15,7 @@ public class Task {
     private long taskid;
     private long userid;
     private String username;
-    private String taskName;
+    private String title;
     private String description;
     private LocalDateTime creationTime;
     private LocalDateTime changeTime;
@@ -25,9 +24,9 @@ public class Task {
     public Task() {
     }
 
-    public Task(String username, String taskName, String description) {
+    public Task(String username, String title, String description) {
         this.username = username;
-        this.taskName = taskName;
+        this.title = title;
         this.status = Status.NEW;
         this.description = description;
         this.creationTime = LocalDateTime.now();
@@ -51,12 +50,12 @@ public class Task {
         this.userid = userid;
     }
 
-    public String getTaskName() {
-        return taskName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -93,7 +92,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return taskName;
+        return title;
     }
 
     public String getTaskid() {

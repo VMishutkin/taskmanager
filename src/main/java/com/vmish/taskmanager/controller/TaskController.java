@@ -3,7 +3,6 @@ package com.vmish.taskmanager.controller;
 import com.vmish.taskmanager.model.Auth;
 import com.vmish.taskmanager.model.Role;
 import com.vmish.taskmanager.repository.UserRepository;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import com.vmish.taskmanager.service.TaskService;
 import com.vmish.taskmanager.model.Task;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -30,7 +28,6 @@ public class TaskController {
     private VBox dialog;
     @FXML
     private GridPane taskGridPane;
-
     private TaskService taskService;
     @FXML
     private TextField tasknameTextField;
@@ -66,30 +63,40 @@ public class TaskController {
     }
 
     public void editTask(Task selectedItem, Auth auth) {
-        Label usernameLabel = new Label("Пользователь");
+
         TextField usernameTextField = new TextField();
         if (auth.getRole() == Role.ADMIN) {
-            usernameTextField.setText(auth.getLogin());
+            showUserField(usernameTextField, true);
+        }
+        tasknameTextField.setText(selectedItem.getTitle());
+        descriptionTextArea.setText(selectedItem.getDescription());
+        stage.showAndWait();
+        if (auth.getRole() == Role.ADMIN) {
+            showUserField(usernameTextField, false);
+        }
+        taskService.updateItem(selectedItem, usernameTextField.getText(),
+                tasknameTextField.getText(), descriptionTextArea.getText());
+        clearFields();
+    }
+
+    private void clearFields() {
+        tasknameTextField.setText("");
+        descriptionTextArea.setText("");
+    }
+
+    private void showUserField(TextField usernameTextField, boolean isShow) {
+        Label usernameLabel = new Label("Пользователь");
+
+        if (isShow) {
             List<String> userList = userRepository.getAllUserNames();
             usernameTextField = new TextField();
             TextFields.bindAutoCompletion(usernameTextField, userList);
             taskGridPane.add(usernameLabel, 0, 1);
             taskGridPane.add(usernameTextField, 1, 1);
-        }
-        tasknameTextField.setText(selectedItem.getTaskName());
-        descriptionTextArea.setText(selectedItem.getDescription());
-
-        stage.showAndWait();
-        if (auth.getRole() == Role.ADMIN) {
-            selectedItem.setUsername(usernameTextField.getText());
+        } else {
             taskGridPane.getChildren().remove(usernameLabel);
             taskGridPane.getChildren().remove(usernameTextField);
         }
-        selectedItem.setTaskName(tasknameTextField.getText());
-        selectedItem.setDescription(descriptionTextArea.getText());
-        selectedItem.setChangeTime(LocalDateTime.now());
-        taskService.addTask(selectedItem);
-
     }
 
 }

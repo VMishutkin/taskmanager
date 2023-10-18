@@ -69,7 +69,7 @@ public class MainController {
                 Task item = (Task) taskListView.getSelectionModel().getSelectedItem();
                 taskIdLabel.setText(item.getTaskid());
                 usernameLabel.setText(item.getUsername());
-                tasknameLabel.setText(item.getTaskName());
+                tasknameLabel.setText(item.getTitle());
                 descriptionTextArea.setText(item.getDescription());
                 creationDateLabel.setText(taskService.getFormatter()
                         .format(item.getCreationTime()));
