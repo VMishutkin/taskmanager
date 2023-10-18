@@ -5,10 +5,7 @@ import com.vmish.taskmanager.model.Status;
 import com.vmish.taskmanager.model.Task;
 import com.vmish.taskmanager.service.TaskService;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -60,33 +57,31 @@ public class MainController {
     }
 
     public void initialize() {
-        newTaskButton.setDisable(true);
-        editButton.setDisable(true);
-        changeStatusButton.setDisable(true);
-        taskListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Task>() {
+        setDisableButtons(true);
+        setListAndViewBinding();
+        taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        setChangingStatusBinding();
+    }
 
-            @Override
-            public void changed(ObservableValue<? extends Task> observableValue, Task oldTask, Task newTask) {
-                if (newTask != null) {
-                    Task item = (Task) taskListView.getSelectionModel().getSelectedItem();
-                    taskIdLabel.setText("" + item.getTaskid());
-                    usernameLabel.setText(item.getUsername());
-                    tasknameLabel.setText(item.getTaskName());
-                    descriptionTextArea.setText(item.getDescription());
-                    creationDateLabel.setText(taskService.getFormatter()
-                            .format(item.getCreationTime()));
-                    changedDateLabel.setText(taskService.getFormatter()
-                            .format(item.getCreationTime()));
-                    statusLabel.setText(item.getStatus().name());
-
-                }
+    private void setListAndViewBinding() {
+        taskListView.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Task>) (observableValue, oldTask, newTask) -> {
+            if (newTask != null) {
+                Task item = (Task) taskListView.getSelectionModel().getSelectedItem();
+                taskIdLabel.setText(item.getTaskid());
+                usernameLabel.setText(item.getUsername());
+                tasknameLabel.setText(item.getTaskName());
+                descriptionTextArea.setText(item.getDescription());
+                creationDateLabel.setText(taskService.getFormatter()
+                        .format(item.getCreationTime()));
+                changedDateLabel.setText(taskService.getFormatter()
+                        .format(item.getChangeTime()));
+                statusLabel.setText(item.getStatus().getStatusName());
             }
         });
         taskListView.setItems(taskService.getTaskList());
-        taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
 
-
-
+    private void setChangingStatusBinding() {
         changeStatusButton.textProperty().bind(Bindings.createStringBinding(() -> {
             Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
             if (selectedItem == null) {
@@ -96,11 +91,15 @@ public class MainController {
             } else if (statusLabel.textProperty().getValue().equals(Status.CLOSED.name())) {
                 return "Вернуть в работу";
             } else {
-                return "Взять в работу?";
+                return "Взять в работу";
             }
         }, statusLabel.textProperty()));
+    }
 
-
+    private void setDisableButtons(boolean disable) {
+        newTaskButton.setDisable(disable);
+        editButton.setDisable(disable);
+        changeStatusButton.setDisable(disable);
     }
 
     public void changeStatus() {
@@ -119,7 +118,7 @@ public class MainController {
         changedDateLabel.setText(taskService.getFormatter()
                 .format(selectedItem.getCreationTime()));
         taskService.update(selectedItem);
-        taskService.setTaskList(auth);
+        taskService.updateTaskList(auth);
     }
 
     @FXML
@@ -133,22 +132,22 @@ public class MainController {
         loginDialog.getController().createUser();
     }
 
-
     public void showAuthWindow() {
         loginDialog = fxWeaver.load(LoginController.class);
         auth = loginDialog.getController().getAuth();
         if (!auth.getLogin().isEmpty()) {
-            newTaskButton.setDisable(false);
-            editButton.setDisable(false);
-            changeStatusButton.setDisable(false);
-            taskService.setTaskList(auth);
+            setDisableButtons(false);
+            taskService.updateTaskList(auth);
         }
     }
 
-    public void editTask(){
+    public void editTask() {
         Task selectedItem = (Task) taskListView.getSelectionModel().getSelectedItem();
-        taskDialog.getController().editTask(selectedItem, auth);
-        taskService.setTaskList(auth);
+        if (selectedItem != null) {
+            taskDialog.getController().editTask(selectedItem, auth);
+            taskService.updateTaskList(auth);
+            taskListView.getSelectionModel().select(selectedItem);
+        }
     }
 
 }

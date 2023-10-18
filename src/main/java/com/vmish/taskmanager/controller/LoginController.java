@@ -84,7 +84,7 @@ public class LoginController {
     public void createUser() {
         loginButton.setText("Save");
         ComboBox rolesComboBox = new ComboBox();
-        List<String> roles = Stream.of(Role.values()).map(Enum::name).collect(Collectors.toList());
+        List<String> roles = Stream.of(Role.values()).map(Enum::name).toList();
         rolesComboBox.getItems().addAll(roles);
         Label userRole = new Label("Роль");
 
@@ -96,7 +96,11 @@ public class LoginController {
 
         MyUser newUser = new MyUser(usernameTextField.getText(), passwordField.getText(),
                 Role.valueOf(rolesComboBox.getValue().toString()));
-        userRepository.save(newUser);
+        try {
+            userRepository.save(newUser);
+        }catch (Exception e){
+
+        }
 
         loginButton.setText("Login");
         loginGridPane.getChildren().remove(rolesComboBox);

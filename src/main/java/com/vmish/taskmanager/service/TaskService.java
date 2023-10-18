@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -42,7 +41,7 @@ public class TaskService {
         return result;
     }
 
-    public void setTaskList(Auth auth) {
+    public void updateTaskList(Auth auth) {
         taskList.clear();
         if (auth.getRole().equals(Role.ADMIN)) {
             taskList.addAll(taskRepository.findAll());
