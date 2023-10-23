@@ -28,6 +28,8 @@
                   <Label text="Название задачи:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                   <TextField fx:id="tasknameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="usernameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="usernameLabel" text="Пользователь" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                </children>
             </GridPane>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

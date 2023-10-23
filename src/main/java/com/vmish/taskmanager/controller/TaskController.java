@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.vmish.taskmanager.service.TaskService;
 import com.vmish.taskmanager.model.Task;
 
+import javax.swing.text.LabelView;
 import java.awt.event.ActionEvent;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
@@ -47,16 +48,18 @@ public class TaskController {
     private Button saveButton;
     @FXML
     private Button createButton;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private TextField usernameTextField;
 
     private Task task;
-    TextField usernameTextField;
 
 
     public TaskController(TaskService taskService, UserRepository userRepository) {
         this.taskService = taskService;
         this.userRepository = userRepository;
         task = new Task();
-         usernameTextField = new TextField();
     }
 
     @FXML
@@ -64,6 +67,9 @@ public class TaskController {
         this.stage = new Stage();
         stage.setScene(new Scene(dialog));
         stage.initModality(Modality.APPLICATION_MODAL);
+
+        List<String> userList = userRepository.getAllUserNames();
+        TextFields.bindAutoCompletion(usernameTextField, userList);
     }
 
     /**
@@ -92,9 +98,14 @@ public class TaskController {
     }
 
     public void save() {
+        task.setUsername(usernameTextField.getText());
+        task.setDescription(descriptionTextArea.getText());
+        task.setTitle(tasknameTextField.getText());
+        task.setChangeTime(LocalDateTime.now());
 
         taskService.updateItem(task);
         stage.close();
+        clearFields();
 
     }
 
@@ -115,25 +126,18 @@ public class TaskController {
     public void editTask(Task selectedTask, Auth auth) {
         createButton.setVisible(false);
         saveButton.setVisible(true);
-        clearFields();
-        usernameTextField = new TextField();
+
         if (auth.getRole() == Role.ADMIN) {
-            showUserField(usernameTextField, true);
+            showUserField(true);
         }
         tasknameTextField.setText(selectedTask.getTitle());
         descriptionTextArea.setText(selectedTask.getDescription());
-       // username = usernameTextField.getText();
-        task = Task.copy(selectedTask);
-        username = usernameTextField.getText();
-
+        usernameTextField.setText(selectedTask.getUsername());
+        task = selectedTask;
         stage.showAndWait();
-        task.setUsername(usernameTextField.getText());
-        task.setDescription(descriptionTextArea.getText());
-        task.setTitle(tasknameTextField.getText());
-        task.setChangeTime(LocalDateTime.now());
 
         if (auth.getRole() == Role.ADMIN) {
-            showUserField(usernameTextField, false);
+            showUserField(false);
         }
 
     }
@@ -142,26 +146,22 @@ public class TaskController {
     private void clearFields() {
         tasknameTextField.setText("");
         descriptionTextArea.setText("");
+        usernameTextField.setText("");
+
     }
 
     /**
      * Для пользователя админа добавляет строку с выбором пользователя
      *
-     * @param usernameTextField поле набора имени пользователя с дозаполнением
-     * @param isShow            если true добавляет поле, если false удаляет
+     * @param isShow если true добавляет поле, если false удаляет
      */
-    private void showUserField(TextField usernameTextField, boolean isShow) {
-        Label usernameLabel = new Label("Пользователь");
-
+    private void showUserField(boolean isShow) {
         if (isShow) {
-            List<String> userList = userRepository.getAllUserNames();
-            usernameTextField = new TextField();
-            TextFields.bindAutoCompletion(usernameTextField, userList);
-            taskGridPane.add(usernameLabel, 0, 1);
-            taskGridPane.add(usernameTextField, 1, 1);
+            usernameLabel.setVisible(true);
+            usernameTextField.setVisible(true);
         } else {
-            taskGridPane.getChildren().remove(usernameLabel);
-            taskGridPane.getChildren().remove(usernameTextField);
+            usernameLabel.setVisible(false);
+            usernameTextField.setVisible(false);
         }
     }
 
